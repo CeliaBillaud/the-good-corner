@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS ad;
+
+CREATE TABLE ad (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    price REAL NOT NULL,
+    city TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
