@@ -1,8 +1,15 @@
 import{
     BaseEntity,
     Column, Entity,  
+    JoinTable,  
+    ManyToMany,  
+    ManyToOne,  
     PrimaryGeneratedColumn
 } from "typeorm";
+
+import Category from "./Category";
+import Tag from "./Tag";
+import { JoinAttribute } from "typeorm/query-builder/JoinAttribute";
 
 @Entity()
 class Ad extends BaseEntity{
@@ -28,8 +35,12 @@ class Ad extends BaseEntity{
     @Column()
     image : string;
 
-    @Column()
-    category_id: number;
+    @ManyToOne(() => Category, category => category.ads, {eager: true})
+    category: Category;
+
+    @ManyToMany(() => Tag, tag => tag.ads, {eager: true})
+    @JoinTable()
+    tags: Tag[];
 }
 
 export default Ad;

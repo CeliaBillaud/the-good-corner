@@ -25,7 +25,7 @@ CREATE TABLE tag (
       city TEXT NOT NULL,
       image TEXT,
       category_id INTEGER NOT NULL
-      -- FOREIGN KEY (category_id) REFERENCES category(id)
+      FOREIGN KEY (category_id) REFERENCES category(id)
   );
 
  CREATE TABLE ad_tag (
@@ -35,7 +35,7 @@ CREATE TABLE tag (
      FOREIGN KEY (tag_id) REFERENCES tag(id)
  );
 
- INSERT INTO category (id, name) VALUES
+INSERT INTO category (id, name) VALUES
      (1, 'Autre'),
      (2, 'Vehicule'),
      (3, 'Hifi');
