@@ -6,7 +6,7 @@ import Tag from "../entities/Tag";
 
 const dataSource = new DataSource({
     type: "sqlite",
-    database: "src/good_corner.sqlite",
+    database: "db/good_corner.sqlite",
     entities: [Ad, Category, Tag],
     synchronize: true,
     logging: ["error", "query"]

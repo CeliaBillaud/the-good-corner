@@ -11,7 +11,12 @@ app.use(express.json());
 const port = 3000;
 
 app.get("/ads", async (_req, res) => {
-  const ads = await Ad.find({});  // Active Record pour récupérer toutes les annonces
+  const ads = await Ad.find({
+    relations: {
+      category: true,
+      tags: true,
+    }
+  });  // Active Record pour récupérer toutes les annonces
   
   res.send(ads);
 });
@@ -26,9 +31,10 @@ app.post("/ads", async (req, res) => {
   ad.createdAt = req.body.createdAt;
   ad.image = req.body.image;
   ad.category = req.body.category;
+  ad.tags = req.body.tags;
  
   //boucler sur les tags
-  ad.tags = await Tag.findBy({id: In(req.body.tags)});
+  // ad.tags = await Tag.findBy({id: In(req.body.tags)});
   ad.save();
 
   res.send(ad);
