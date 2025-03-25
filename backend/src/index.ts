@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express from "express";
+import cors from "cors";
 import dataSource from "./config/db";
 import Ad from "./entities/Ad";
 import Category from "./entities/Category";
@@ -10,17 +11,18 @@ const app = express();
 app.use(express.json());
 const port = 3000;
 
+app.use(cors());
+
 app.get("/ads", async (_req, res) => {
   const ads = await Ad.find({
     relations: {
       category: true,
       tags: true,
-    }
-  });  // Active Record pour récupérer toutes les annonces
-  
+    },
+  }); // Active Record pour récupérer toutes les annonces
+
   res.send(ads);
 });
-
 
 app.post("/ads", async (req, res) => {
   const ad = new Ad();
@@ -29,10 +31,10 @@ app.post("/ads", async (req, res) => {
   ad.author = req.body.author;
   ad.price = req.body.price;
   ad.createdAt = req.body.createdAt;
-  ad.image = req.body.image;
+  ad.pictureUrl = req.body.image;
   ad.category = req.body.category;
   ad.tags = req.body.tags;
- 
+
   //boucler sur les tags
   // ad.tags = await Tag.findBy({id: In(req.body.tags)});
   ad.save();
@@ -41,8 +43,8 @@ app.post("/ads", async (req, res) => {
 });
 
 app.delete("/ads/:id", async (req, res) => {
-  Ad.delete({id: parseInt(req.params.id)});
-  res.send('deleted');
+  Ad.delete({ id: parseInt(req.params.id) });
+  res.send("deleted");
 });
 
 app.put("/ads/:id", async (req, res) => {
@@ -58,12 +60,12 @@ app.put("/ads/:id", async (req, res) => {
 
   // ad.save();
 
-  await Ad.update({id: parseInt(req.params.id)}, req.body);
-  res.send('updated');
+  await Ad.update({ id: parseInt(req.params.id) }, req.body);
+  res.send("updated");
 });
 
 app.get("/categories", async (_req, res) => {
-  const categories = await Category.find({});  // Active Record pour récupérer toutes les annonces  
+  const categories = await Category.find({}); // Active Record pour récupérer toutes les annonces
   res.send(categories);
 });
 
@@ -77,7 +79,7 @@ app.post("/categories", (req, res) => {
 });
 
 app.get("/tags", async (_req, res) => {
-  const tags = await Tag.find({});  // Active Record pour récupérer toutes les annonces
+  const tags = await Tag.find({}); // Active Record pour récupérer toutes les annonces
   res.send(tags);
 });
 
@@ -95,8 +97,8 @@ app.listen(port, async () => {
   console.log(`Example app listening on port ${port}`);
   //initialize renvoie une promesse
   await dataSource.initialize();
-  const categories =  await Category.find({});
-  if(categories.length === 0){
+  const categories = await Category.find({});
+  if (categories.length === 0) {
     const category = new Category();
     category.name = "test";
     category.save();

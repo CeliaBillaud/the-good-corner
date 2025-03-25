@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS category;
 
 CREATE TABLE category (
     id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT
 );
 
 CREATE TABLE tag (
     id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT
 );
 
  CREATE TABLE ad (
@@ -21,59 +21,98 @@ CREATE TABLE tag (
       description TEXT,
       author TEXT NOT NULL,
       price REAL NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
       city TEXT NOT NULL,
-      image TEXT,
-      category_id INTEGER NOT NULL
-      FOREIGN KEY (category_id) REFERENCES category(id)
+      pictureUrl TEXT,
+      categoryId INTEGER,
+      FOREIGN KEY (categoryId) REFERENCES category(id)
   );
 
  CREATE TABLE ad_tag (
-     ad_id INTEGER,
-     tag_id INTEGER,
-     FOREIGN KEY (ad_id) REFERENCES ad(id),
-     FOREIGN KEY (tag_id) REFERENCES tag(id)
+     adId INTEGER,
+     tagId INTEGER,
+     FOREIGN KEY (adId) REFERENCES ad(id),
+     FOREIGN KEY (tagId) REFERENCES tag(id)
  );
 
-INSERT INTO category (id, name) VALUES
-     (1, 'Autre'),
-     (2, 'Vehicule'),
-     (3, 'Hifi');
+INSERT INTO category (id, name) 
+  VALUES
+    (1, 'Autre'),
+    (2, 'Vehicule'),
+    (3, 'Multimédia'),
+    (4, 'Meuble');
 
-INSERT INTO tag (id, name) VALUES
-    (1, 'neuf'),
-    (2, 'soldé');
+INSERT INTO tag (id, name)
+    VALUES
+      (1, 'Bon plan'),
+      (2, 'Coup de coeur'),
+      (3, 'Neuf'),
+      (4, 'Occasion');
 
-INSERT INTO ad (id, title, description, author, price, created_at, city, image, category_id) VALUES
-    (1, 'Vélo à vendre', 'Vélo en bon état, peu servi', 'john.doe@gmail.com', 150, '2024-03-19', 'Paris', NULL, 2),
-    (2, 'Voiture d''occasion', 'Voiture très bien entretenue', 'jane.smith@gmail.com', 5000, '2024-03-18', 'Lyon', 'https://example.com/image1.jpg', 2),
-    (3, 'Stylo plume', 'Stylo plume Parker, encre bleue', 'writer.seller@gmail.com', 15, '2024-09-01', 'Bordeaux', NULL, 1),
-    (4, 'Chaise pliante', 'Chaise pliante pratique pour camping', 'camping.seller@gmail.com', 30, '2024-09-01', 'Paris', NULL, 1),
-    (5, 'Lampe de chevet', 'Lampe LED moderne, plusieurs couleurs', 'home.seller@gmail.com', 35, '2024-09-01 18:45:00', 'Lyon', NULL, 1),
-    (6, 'Table en bois massif', 'Table en chêne, très solide', 'woodworker@gmail.com', 200, '2024-03-14 11:20:00', 'Bordeaux', NULL, 1),
-    (7,'Smartphone Android', 'Samsung Galaxy S21, très bon état', 'phone.seller@gmail.com', 500, '2024-03-13 16:00:00', 'Paris', 'https://example.com/image3.jpg', 3),
-    (8, 'Montre connectée', 'Apple Watch Series 7, fonctionne parfaitement', 'watch.seller@gmail.com', 250, '2024-03-12 08:45:00', 'Lyon', NULL, 3),
-    (9, 'Console de jeux', 'PlayStation 5, avec deux manettes', 'gamer@gmail.com', 450, '2024-03-11 20:30:00', 'Bordeaux', 'https://example.com/image4.jpg', 3),
-    (10, 'Paquet de stylos', 'Lot de 10 stylos Bic', 'office.seller@gmail.com', 5, '2024-02-10 13:10:00', 'Paris', NULL, 1),
-    (11, 'Câble USB-C', 'Chargeur rapide USB-C 2m', 'tech.seller@gmail.com', 12, '2024-02-15 17:25:00', 'Lyon', NULL, 3),
-    (12, 'Sac à dos', 'Sac à dos 20L, idéal pour la randonnée', 'sport.seller@gmail.com', 35, '2024-02-20 15:40:00', 'Bordeaux', NULL, 1),
-    (13, 'Aspirateur robot', 'Roomba i7, fonctionne très bien', 'clean.seller@gmail.com', 300, '2024-03-08 10:10:00', 'Bordeaux', NULL, 3),
-    (14, 'Machine à café', 'Nespresso Vertuo, avec capsules offertes', 'coffee.seller@gmail.com', 120, '2024-03-06 09:30:00', 'Lyon', NULL, 1),
-    (15, 'VTT tout terrain', 'Vélo de montagne avec suspensions', 'bike.seller@gmail.com', 400, '2024-03-05 07:50:00', 'Bordeaux', NULL, 2),
-    (16, 'Clé USB 64Go', 'Clé USB Kingston 64Go neuve', 'data.seller@gmail.com', 20, '2024-09-02 12:30:00', 'Paris', NULL, 3),
-    (17, 'Cahier de notes', 'Cahier A4 200 pages, lignage classique', 'student.seller@gmail.com', 10, '2024-09-03 08:00:00', 'Lyon', NULL, 1),
-    (18, 'Tapis de course', 'Tapis pliable, idéal pour la maison', 'fitness.seller@gmail.com', 600, '2024-03-01 18:20:00', 'Paris', NULL, 2),
-    (19, 'Barbecue à gaz', 'Barbecue Weber, idéal pour l''été', 'bbq.seller@gmail.com', 250, '2024-02-28 14:45:00', 'Lyon', 'https://example.com/image7.jpg', 1),
-    (20, 'Trousse scolaire', 'Trousse avec 5 stylos et règle', 'school.seller@gmail.com', 8, '2024-09-02 11:10:00', 'Bordeaux', NULL, 1);
+INSERT INTO ad (id, title, description, author, price, pictureUrl, city, createdAt, categoryId)
+    VALUES
+        (1, 'Vélo de route carbone', 'Vélo en excellent état, très léger, idéal pour les longues sorties.', 'JeanDupont', 1200, 'https://picsum.photos/id/26/200/300', 'Lyon', '2025-03-23 10:00:00', 2),
+        (2, 'Table basse en bois massif', 'Table en chêne massif, quelques traces d''usure.', 'MarieCurie', 150, 'https://picsum.photos/id/27/200/300', 'Bordeaux', '2025-03-22 15:30:00', 4),
+        (3, 'PC portable gaming', 'RTX 3070, i7, 16Go RAM, excellent pour les jeux récents.', 'Gamer34', 900, 'https://picsum.photos/id/28/200/300', 'Paris', '2025-03-20 08:15:00', 3),
+        (4, 'Canapé 3 places', 'Grand canapé confortable, tissu gris, parfait état.', 'SophieM', 500, 'https://picsum.photos/id/29/200/300', 'Marseille', '2025-03-21 17:45:00', 2),
+        (5, 'iPhone 13 Pro', 'Modèle 256Go, état impeccable, vendu avec boîte.', 'TechFan', 850, 'https://picsum.photos/id/30/200/300', 'Nice', '2025-03-19 12:00:00', 3),
+        (6, 'Guitare acoustique Fender', 'Sonorité magnifique, cordes neuves.', 'Musicaddict', 300, 'https://picsum.photos/id/31/200/300', 'Lille', '2025-03-18 14:10:00', 1),
+        (7, 'Lot de livres de science-fiction', 'Collection de 10 livres, Asimov, Clarke, Herbert.', 'BookLover', 50, 'https://picsum.photos/id/32/200/300', 'Toulouse', '2025-03-23 09:30:00', 1),
+        (8, 'Trottinette électrique', 'Autonomie 30km, vitesse max 25km/h.', 'Ecomobility', 400, 'https://picsum.photos/id/33/200/300', 'Strasbourg', '2025-03-22 18:20:00', 2),
+        (9, 'Montre connectée Garmin', 'Idéale pour le sport, GPS intégré.', 'Sportif75', 200, 'https://picsum.photos/id/34/200/300', 'Rennes', '2025-03-21 07:45:00', 3),
+        (10, 'Lit en bois avec matelas', 'Lit double 140x200 avec matelas mémoire de forme.', 'EmmaD', 600, 'https://picsum.photos/id/10/200/300', 'Nantes', '2025-03-20 16:30:00', 4),
+        (11, 'Sac de randonnée 50L', 'Parfait pour trek, nombreuses poches.', 'Randopassion', 80, 'https://picsum.photos/id/11/200/300', 'Grenoble', '2025-03-19 13:55:00', 1),
+        (12, 'Appareil photo reflex Canon', 'Canon EOS 90D avec objectif 18-135mm.', 'PhotoPro', 1100, 'https://picsum.photos/id/12/200/300', 'Montpellier', '2025-03-18 10:40:00', 3),
+        (13, 'Chaussures de trail Salomon', 'Pointure 42, très bon état.', 'TrailRunner', 70, 'https://picsum.photos/id/13/200/300', 'Dijon', '2025-03-23 11:00:00', 1),
+        (14, 'Enceinte Bluetooth JBL', 'Puissante et étanche, parfait pour l''extérieur.', 'MusicFan', 120, 'https://picsum.photos/id/14/200/300', 'Metz', '2025-03-22 14:25:00', 3),
+        (15, 'Voiture d''occasion Renault Clio', 'Clio 4, 2018, 75000km, très bon état.', 'AutoLover', 8900, 'https://picsum.photos/id/15/200/300', 'Rouen', '2025-03-21 16:15:00', 2),
+        (16, 'Bureau en verre', 'Design moderne, parfait pour le télétravail.', 'HomeOffice', 250, 'https://picsum.photos/id/16/200/300', 'Brest', '2025-03-20 08:05:00', 4),
+        (17, 'Lave-linge Bosch', 'Capacité 7kg, classe A++.', 'EcoWash', 300, 'https://picsum.photos/id/17/200/300', 'Orléans', '2025-03-19 20:45:00', 1),
+        (18, 'Lot de jeux PS5', '5 jeux récents en excellent état.', 'GamerX', 150, 'https://picsum.photos/id/18/200/300', 'Le Havre', '2025-03-18 09:20:00', 3),
+        (19, 'Poussette bébé', 'Poussette 3 roues tout terrain.', 'BabyCare', 180, 'https://picsum.photos/id/19/200/300', 'Perpignan', '2025-03-17 17:50:00', 2),
+        (20, 'Piano numérique Yamaha', 'Idéal pour débutants et confirmés.', 'PianisteAmateur', 450, 'https://picsum.photos/id/20/200/300', 'Avignon', '2025-03-16 12:30:00', 3),
+        (21, 'Tondeuse thermique', 'Puissante et efficace, idéale pour grand jardin.', 'Jardinier', 220, 'https://picsum.photos/id/21/200/300', 'Limoges', '2025-03-15 08:10:00', 1),
+        (22, 'Climatiseur mobile', 'Puissance 12000 BTU, parfait pour l''été.', 'CoolLife', 350, 'https://picsum.photos/id/22/200/300', 'Besançon', '2025-03-14 18:00:00', 1),
+        (23, 'Lampe de chevet design', 'Éclairage LED avec variateur.', 'Decoraddict', 40, 'https://picsum.photos/id/23/200/300', 'Valence', '2025-03-13 22:45:00', 4),
+        (24, 'Tablette Samsung Galaxy Tab S8', 'Écran 11", 128Go, avec stylet.', 'TechGuru', 600, 'https://picsum.photos/id/24/200/300', 'Clermont-Ferrand', '2025-03-12 15:20:00', 3),
+        (25, 'Chaise de bureau ergonomique', 'Idéale pour le télétravail.', 'ConfortOffice', 180, 'https://picsum.photos/id/25/200/300', 'Toulon', '2025-03-11 09:00:00', 4);
 
-INSERT INTO ad_tag (ad_id, tag_id) VALUES
-    (1, 1), 
-    (2, 1),
-    (2, 2),
-    (3, 2), 
-    (4, 1),
-    (4, 2), 
-    (5, 1); 
+INSERT INTO ad_tag (adId, tagId) 
+  VALUES
+    (1, 4),
+    (2, 4),
+    (3, 3), 
+    (3, 4),
+    (4, 4),
+    (5, 3),
+    (6, 4),
+    (7, 4),
+    (8, 3),
+    (9, 3), 
+    (9, 2),
+    (10, 4),
+    (11, 1), 
+    (11, 4),
+    (12, 3), 
+    (12, 2),
+    (13, 4),
+    (14, 3), 
+    (14, 1),
+    (15, 4),
+    (16, 4),
+    (17, 4),
+    (18, 4),
+    (19, 4),
+    (20, 3), 
+    (20, 2),
+    (21, 4),
+    (22, 3), 
+    (22, 1),
+    (23, 3), 
+    (23, 2),
+    (24, 3),
+    (25, 3), 
+    (25, 1);
 
 -- -- SELECT * FROM tag;
 -- -- SELECT * FROM ad INNER JOIN category ON ad.category_id = category.id;
