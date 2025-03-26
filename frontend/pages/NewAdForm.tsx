@@ -1,131 +1,102 @@
-import axios from "axios";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Category {
   id: number;
   name: string;
 }
 
-interface Tag {
-  id: number;
-  name: string;
-}
+type Inputs = {
+  title: string;
+  description: string;
+  author: string;
+  price: number;
+  pictureUrl: string;
+  category: number;
+};
 
 const NewAdForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
 
   const fetchCategories = async () => {
     try {
-      const result = await axios.get<Category[]>(
-        "http://localhost:3000/categories"
-      );
-      setCategories(result.data);
-      console.log(result.data);
-    } catch (err) {
-      console.log("error", err);
-    }
-  };
-
-  const fetchTags = async () => {
-    try {
-      const result = await axios.get<Tag[]>("http://localhost:3000/tags");
-      setTags(result.data);
-      console.log(result.data);
-    } catch (err) {
-      console.log("error", err);
+      const response = await axios.get("http://localhost:3000/categories");
+      setCategories(response.data);
+    } catch (error) {
+      console.error("An error occured while fetching categories :", error);
     }
   };
 
   useEffect(() => {
     fetchCategories();
-    fetchTags();
   }, []);
 
-  const addAd = async (adData: any) => {
-    // Crée un objet avec les données
-    const adJson = {
-      title: adData.title,
-      description: adData.description,
-      author: adData.author,
-      price: adData.price,
-      category: adData.category,
-      pictureUrl: adData.pictureUrl, // Assure-toi que pictureUrl est bien ici
-      tags: adData.tags, // Si tu as des tags, assure-toi qu'ils sont également inclus
-    };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
 
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const result = await axios.post("http://localhost:3000/ads", adJson, {
-        headers: {
-          "Content-Type": "application/json", // Utilise JSON pour envoyer les données
-        },
-      });
-      console.log("Annonce ajoutée :", result.data);
-    } catch (err) {
-      console.error("Erreur lors de l'ajout :", err);
+      console.log(data);
+      await axios.post("http://localhost:3000/ads", data);
+    } catch (error) {
+      console.error("An error occured while posting the ad :", error);
     }
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
+    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {errors.title && <span>This field is required</span>}
 
-        const form = e.target as HTMLFormElement;
-        const formData = new FormData(form);
-
-        let formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
-        addAd(formJson);
-      }}
-    >
-      <label htmlFor="title">Titre de l'&apos;annonce</label>
-      <br />
-      <input type="text" id="title" name="title" className="text-field" />
-      <br />
-      <br />
-
-      <label htmlFor="description">Description</label>
+      {/* register your input into the hook by invoking the "register" function */}
+      <label>Title</label>
       <br />
       <input
-        type="text"
-        id="description"
-        name="description"
-        className="text-field"
+        defaultValue="Je vends ma 206"
+        {...register("title", { required: true })}
       />
       <br />
       <br />
 
-      <label htmlFor="author">Ton Nom</label>
-      <br />
-      <input type="text" id="author" name="author" className="text-field" />
-      <br />
-      <br />
-
-      <label htmlFor="price">Prix</label>
-      <br />
-      <input type="number" id="price" name="price" className="text-field" />
-      <br />
-      <br />
-
-      <label htmlFor="pictureUrl">URL de l&apos;image</label>
+      <label>Description</label>
       <br />
       <input
-        type="text"
-        id="pictureUrl"
-        name="pictureUrl"
-        className="text-field"
+        defaultValue="Super 206"
+        {...register("description", { required: true })}
       />
       <br />
       <br />
 
-      <label htmlFor="category" id="category">
-        Catégorie
-      </label>
+      <label>Author</label>
       <br />
-      <select name="category" id="category">
+      <input defaultValue="Jean" {...register("author", { required: true })} />
+      <br />
+      <br />
+
+      <label>Price</label>
+      <br />
+      <input defaultValue="2000" {...register("price", { required: true })} />
+      <br />
+      <br />
+
+      <label>Lien de l'image</label>
+      <br />
+      <input
+        defaultValue="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkRGcnX3rwkJX7ZDm49JqFa2OLnNjyXyxNlw&s"
+        {...register("pictureUrl", { required: true })}
+      />
+      <br />
+      <br />
+
+      <label>Category</label>
+      <br />
+      <select {...register("category")}>
         {categories.map((category) => (
-          <option value={category.id} key={category.id}>
+          <option key={category.id} value={category.id}>
             {category.name}
           </option>
         ))}
@@ -133,20 +104,7 @@ const NewAdForm = () => {
       <br />
       <br />
 
-      <fieldset>
-        <legend>Tags</legend>
-        {tags.map((tag) => (
-          <div key={tag.id}>
-            <input type="checkbox" id={tag.name} name="tags" value={tag.id} />
-            <label htmlFor={tag.name}>{tag.name}</label>
-          </div>
-        ))}
-      </fieldset>
-
-      <br />
-      <br />
-
-      <button type="submit">Poster</button>
+      <input type="submit" />
     </form>
   );
 };
