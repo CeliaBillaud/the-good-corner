@@ -13,6 +13,7 @@ const port = 3000;
 
 app.use(cors());
 
+//todo ajouter un filter pour categroyid
 app.get("/ads", async (_req, res) => {
   const ads = await Ad.find({
     relations: {
@@ -62,6 +63,19 @@ app.put("/ads/:id", async (req, res) => {
 
   await Ad.update({ id: parseInt(req.params.id) }, req.body);
   res.send("updated");
+});
+
+app.get("/ads/categories/:id", async (req, res) => {
+  try {
+    const adsByCategory = await Ad.find({
+      where: { category: { id: parseInt(req.params.id) } },
+      relations: ["category"],
+    });
+
+    res.send(adsByCategory);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
 });
 
 app.get("/categories", async (_req, res) => {

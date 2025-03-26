@@ -2,51 +2,6 @@ import { useEffect, useState } from "react";
 import AdCard, { AdCardProps } from "./AdCard";
 import axios from "axios";
 
-const ads: AdCardProps[] = [
-  {
-    id: 1,
-    title: "Table",
-    pictureUrl: "/images/table.webp",
-    price: 120,
-    link: "/ads/table",
-  },
-  {
-    id: 2,
-    title: "Dame-jeanne",
-    pictureUrl: "/images/dame-jeanne.webp",
-    price: 75,
-    link: "/ads/dame-jeanne",
-  },
-  {
-    id: 3,
-    title: "Vide-poche",
-    pictureUrl: "/images/vide-poche.webp",
-    price: 4,
-    link: "/ads/vide-poche",
-  },
-  {
-    id: 4,
-    title: "Vaisselier",
-    pictureUrl: "/images/vaisselier.webp",
-    price: 900,
-    link: "/ads/vaisselier",
-  },
-  {
-    id: 5,
-    title: "Bougie",
-    pictureUrl: "/images/bougie.webp",
-    price: 8,
-    link: "/ads/bougie",
-  },
-  {
-    id: 6,
-    title: "Porte-magazine",
-    pictureUrl: "/images/porte-magazine.webp",
-    price: 45,
-    link: "/ads/porte-magazine",
-  },
-];
-
 const RecentAds = () => {
   const [total, setTotal] = useState(0);
   const [ads, setAds] = useState<AdCardProps[]>([]);

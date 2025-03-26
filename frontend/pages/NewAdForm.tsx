@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
 }

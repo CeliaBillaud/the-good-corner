@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Category } from "../../pages/NewAdForm";
 
 export interface AdCardProps {
   id: number;
@@ -6,6 +7,7 @@ export interface AdCardProps {
   pictureUrl: string;
   price: number;
   link: string;
+  category?: Category;
 }
 
 const AdCard = ({ title, pictureUrl, price, link }: AdCardProps) => {
