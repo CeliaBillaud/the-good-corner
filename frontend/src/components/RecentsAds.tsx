@@ -71,8 +71,8 @@ const RecentAds = () => {
       <p>Total: {total}€</p>
       <section className="recent-ads">
         {ads.map((ad) => (
-          <div className="ad-card-container">
-            <AdCard key={ad.id} {...ad} />
+          <div className="ad-card-container" key={ad.id}>
+            <AdCard {...ad} />
             <button
               className="button"
               onClick={() => setTotal(total + ad.price)}

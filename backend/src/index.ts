@@ -31,7 +31,7 @@ app.post("/ads", async (req, res) => {
   ad.author = req.body.author;
   ad.price = req.body.price;
   ad.createdAt = req.body.createdAt;
-  ad.pictureUrl = req.body.image;
+  ad.pictureUrl = req.body.pictureUrl;
   ad.category = req.body.category;
   ad.tags = req.body.tags;
 

@@ -3,6 +3,7 @@ import RecentAds from "./components/RecentsAds";
 import About from "../pages/About";
 import Layout from "../pages/Layout";
 import AdDetails from "../pages/AdDetails";
+import NewAdForm from "../pages/NewAdForm";
 //import Header from "./components/Header";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<RecentAds />} />
           <Route path="about" element={<About />} />
           <Route path="ad/:id" element={<AdDetails />} />
+          <Route path="ad/new" element={<NewAdForm />} />
         </Route>
       </Routes>
 

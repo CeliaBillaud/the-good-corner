@@ -6,6 +6,7 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
 } from "typeorm";
 
 import Category from "./Category";
@@ -30,7 +31,7 @@ class Ad extends BaseEntity {
   price: number;
 
   // @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  @Column()
+  @CreateDateColumn()
   createdAt: string;
 
   @Column()
