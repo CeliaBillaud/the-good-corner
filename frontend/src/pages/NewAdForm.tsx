@@ -49,7 +49,7 @@ const NewAdForm = () => {
       {errors.title && <span>This field is required</span>}
 
       {/* register your input into the hook by invoking the "register" function */}
-      <label>Title</label>
+      <label>Titre</label>
       <br />
       <input
         defaultValue="Je vends ma 206"

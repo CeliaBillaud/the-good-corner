@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import AdDetails from "./pages/AdDetails";
 import NewAdForm from "./pages/NewAdForm";
 import AdsByCategory from "./pages/AdsByCategory";
+import NewCategoryForm from "./pages/NewCategoryForm";
 //import Header from "./components/Header";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="ads/:id" element={<AdDetails />} />
           <Route path="ads/new" element={<NewAdForm />} />
+          <Route path="ads/categories/new" element={<NewCategoryForm />} />
           <Route path="ads/categories/:id" element={<AdsByCategory />} />
         </Route>
       </Routes>
