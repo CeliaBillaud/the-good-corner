@@ -6,6 +6,7 @@ import AdDetails from "./pages/AdDetails";
 import NewAdForm from "./pages/NewAdForm";
 import AdsByCategory from "./pages/AdsByCategory";
 import NewCategoryForm from "./pages/NewCategoryForm";
+import NewTagForm from "./pages/NewTagForm";
 //import Header from "./components/Header";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="ads/:id" element={<AdDetails />} />
           <Route path="ads/new" element={<NewAdForm />} />
           <Route path="ads/categories/new" element={<NewCategoryForm />} />
+          <Route path="ads/tags/new" element={<NewTagForm />} />
           <Route path="ads/categories/:id" element={<AdsByCategory />} />
         </Route>
       </Routes>
