@@ -1,14 +1,5 @@
 import { Link } from "react-router";
-import { Category } from "../../pages/NewAdForm";
-
-export interface AdCardProps {
-  id: number;
-  title: string;
-  pictureUrl: string;
-  price: number;
-  link: string;
-  category?: Category;
-}
+import { AdCardProps } from "../types";
 
 const AdCard = ({ title, pictureUrl, price, link }: AdCardProps) => {
   return (

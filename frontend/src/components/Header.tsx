@@ -1,13 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-
-//todo 1: récupérer les catégories du backend pour afficher
-
-interface Category {
-  id: number;
-  name: string;
-}
+import { Category } from "../types";
 
 const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -52,7 +46,7 @@ const Header = () => {
             </svg>
           </button>
         </form>
-        <Link to="/ad/new" className="button link-button">
+        <Link to="/ads/new" className="button link-button">
           <span className="mobile-short-label">Publier</span>
           <span className="desktop-long-label">Publier une annonce</span>
         </Link>

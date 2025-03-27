@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import AdCard, { AdCardProps } from "./AdCard";
+import AdCard from "./AdCard";
+import { AdCardProps } from "../types";
 import axios from "axios";
 
 const RecentAds = () => {

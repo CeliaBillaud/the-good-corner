@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import AdCard, { AdCardProps } from "../src/components/AdCard";
+import AdCard from "../components/AdCard";
+import { AdCardProps } from "../types";
 
 const AdsByCategory = () => {
   const { id } = useParams();
