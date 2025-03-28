@@ -2,9 +2,26 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { Category } from "../types";
+import { useNavigate } from "react-router";
 
 const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  // Fonction qui gère la soumission du formulaire de recherche
+  const handleSearch = (e: React.FormEvent) => {
+    // Empêche le comportement par défaut du formulaire (rechargement de page)
+    e.preventDefault();
+
+    // Vérifie si le terme de recherche n'est pas vide après avoir supprimé les espaces
+    if (searchTerm.trim()) {
+      // Navigue vers la page de recherche
+      // encodeURIComponent() encode les caractères spéciaux de l'URL
+      // ?q= crée un paramètre de requête 'q' avec le terme de recherche
+      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -28,9 +45,15 @@ const Header = () => {
             <span className="desktop-long-label">THE GOOD CORNER</span>
           </Link>
         </h1>
-        <form className="text-field-with-button">
-          <input className="text-field main-search-field" type="search" />
-          <button className="button button-primary">
+        <form className="text-field-with-button" onSubmit={handleSearch}>
+          <input
+            className="text-field main-search-field"
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Rechercher une annonce"
+          />
+          <button type="submit" className="button button-primary">
             <svg
               aria-hidden="true"
               width="16"

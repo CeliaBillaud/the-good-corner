@@ -7,6 +7,9 @@ import NewAdForm from "./pages/NewAdForm";
 import AdsByCategory from "./pages/AdsByCategory";
 import NewCategoryForm from "./pages/NewCategoryForm";
 import NewTagForm from "./pages/NewTagForm";
+import SearchResultsPage from "./pages/SearchResultsPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //import Header from "./components/Header";
 
 function App() {
@@ -21,8 +24,10 @@ function App() {
           <Route path="ads/categories/new" element={<NewCategoryForm />} />
           <Route path="ads/tags/new" element={<NewTagForm />} />
           <Route path="ads/categories/:id" element={<AdsByCategory />} />
+          <Route path="/search" element={<SearchResultsPage />} />
         </Route>
       </Routes>
+      <ToastContainer aria-label="Notifications" />
 
       {/* <Header />
       <Routes>

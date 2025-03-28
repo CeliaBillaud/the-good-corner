@@ -10,10 +10,17 @@ type Inputs = {
   price: number;
   pictureUrl: string;
   category: number;
+  tags: string[];
 };
+
+interface Tag {
+  id: number;
+  name: string;
+}
 
 const NewAdForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const fetchCategories = async () => {
     try {
@@ -24,8 +31,19 @@ const NewAdForm = () => {
     }
   };
 
+  const fetchTags = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/tags");
+      console.log(response.data);
+      setTags(response.data);
+    } catch (error) {
+      console.error("An error occured while fetching tags :", error);
+    }
+  };
+
   useEffect(() => {
     fetchCategories();
+    fetchTags();
   }, []);
 
   const {
@@ -90,7 +108,7 @@ const NewAdForm = () => {
 
       <label>Category</label>
       <br />
-      <select {...register("category")}>
+      <select {...register("category")} defaultValue={categories[0]?.id}>
         {categories.map((category) => (
           <option key={category.id} value={category.id}>
             {category.name}
@@ -98,6 +116,18 @@ const NewAdForm = () => {
         ))}
       </select>
       <br />
+      <br />
+
+      <fieldset>
+        <legend>Tags</legend>
+        {tags.map((tag) => (
+          <div key={tag.id}>
+            <input type="checkbox" value={tag.id} {...register("tags")} />
+            <label>{tag.name}</label>
+          </div>
+        ))}
+      </fieldset>
+
       <br />
 
       <input type="submit" />

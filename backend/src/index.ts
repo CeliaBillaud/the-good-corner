@@ -5,7 +5,7 @@ import dataSource from "./config/db";
 import Ad from "./entities/Ad";
 import Category from "./entities/Category";
 import Tag from "./entities/Tag";
-import { In } from "typeorm";
+import { FindOptionsWhere, Like } from "typeorm";
 
 const app = express();
 app.use(express.json());
@@ -13,15 +13,42 @@ const port = 3000;
 
 app.use(cors());
 
-//todo ajouter un filter pour categroyid
-app.get("/ads", async (_req, res) => {
+app.get("/ads", async (req, res) => {
   const ads = await Ad.find({
+    where: req.query.title
+      ? {
+          title: Like(`%${req.query.title.toString()}%`),
+        }
+      : {},
     relations: {
       category: true,
       tags: true,
     },
-  }); // Active Record pour récupérer toutes les annonces
+  });
 
+  console.log("Filtered ads:", ads.length);
+  res.send(ads);
+});
+app.get("/ads/:id", async (req, res) => {
+  const ad = await Ad.find({
+    where: { id: parseInt(req.params.id) },
+    relations: {
+      category: true,
+      tags: true,
+    },
+  });
+
+  res.send(ad);
+});
+
+app.get("/ads", async (req, res) => {
+  const ads = await Ad.find({
+    where: req.query.title
+      ? {
+          title: Like(`%${req.query.title.toString()}%`),
+        }
+      : {},
+  });
   res.send(ads);
 });
 
@@ -34,10 +61,8 @@ app.post("/ads", async (req, res) => {
   ad.createdAt = req.body.createdAt;
   ad.pictureUrl = req.body.pictureUrl;
   ad.category = req.body.category;
-  ad.tags = req.body.tags;
+  ad.tags = req.body.tags.map((tag: string) => ({ id: parseInt(tag) }));
 
-  //boucler sur les tags
-  // ad.tags = await Tag.findBy({id: In(req.body.tags)});
   ad.save();
 
   res.send(ad);

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AdCard from "./AdCard";
 import { AdCardProps } from "../types";
 import axios from "axios";
+import { Link } from "react-router";
 
 const RecentAds = () => {
   const [total, setTotal] = useState(0);
@@ -27,7 +28,7 @@ const RecentAds = () => {
       <p>Total: {total}€</p>
       <section className="recent-ads">
         {ads.map((ad) => (
-          <div className="ad-card-container" key={ad.id}>
+          <Link to={`/ads/${ad.id}`} className="ad-card-container" key={ad.id}>
             <AdCard {...ad} />
             <button
               className="button"
@@ -35,7 +36,7 @@ const RecentAds = () => {
             >
               Ajouter au panier
             </button>
-          </div>
+          </Link>
         ))}
       </section>
     </>

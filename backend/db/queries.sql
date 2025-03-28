@@ -1,9 +1,9 @@
--- PRAGMA foreign_keys = ON;
-
-DROP TABLE IF EXISTS ad_tag;
+PRAGMA foreign_keys = OFF; -- Désactive temporairement les contraintes de clés étrangères
+DROP TABLE IF EXISTS ad_tags_tag;
 DROP TABLE IF EXISTS ad;
 DROP TABLE IF EXISTS tag;
 DROP TABLE IF EXISTS category;
+PRAGMA foreign_keys = ON;
 
 CREATE TABLE category (
     id INTEGER PRIMARY KEY,
@@ -28,7 +28,7 @@ CREATE TABLE tag (
       FOREIGN KEY (categoryId) REFERENCES category(id)
   );
 
- CREATE TABLE ad_tag (
+ CREATE TABLE ad_tags_tag (
      adId INTEGER,
      tagId INTEGER,
      FOREIGN KEY (adId) REFERENCES ad(id),
@@ -77,7 +77,7 @@ INSERT INTO ad (id, title, description, author, price, pictureUrl, city, created
         (24, 'Tablette Samsung Galaxy Tab S8', 'Écran 11", 128Go, avec stylet.', 'TechGuru', 600, 'https://picsum.photos/id/24/200/300', 'Clermont-Ferrand', '2025-03-12 15:20:00', 3),
         (25, 'Chaise de bureau ergonomique', 'Idéale pour le télétravail.', 'ConfortOffice', 180, 'https://picsum.photos/id/25/200/300', 'Toulon', '2025-03-11 09:00:00', 4);
 
-INSERT INTO ad_tag (adId, tagId) 
+INSERT INTO ad_tags_tag (adId, tagId) 
   VALUES
     (1, 4),
     (2, 4),
