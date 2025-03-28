@@ -34,7 +34,6 @@ const NewAdForm = () => {
   const fetchTags = async () => {
     try {
       const response = await axios.get("http://localhost:3000/tags");
-      console.log(response.data);
       setTags(response.data);
     } catch (error) {
       console.error("An error occured while fetching tags :", error);
@@ -73,6 +72,7 @@ const NewAdForm = () => {
         defaultValue="Je vends ma 206"
         {...register("title", { required: true })}
       />
+
       <br />
       <br />
 

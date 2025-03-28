@@ -3,6 +3,11 @@ export interface Category {
   name: string;
 }
 
+export interface Tag {
+  id: number;
+  name: string;
+}
+
 export interface AdCardProps {
   id: number;
   title: string;
@@ -22,6 +27,6 @@ export interface AdDetailsProps {
   author: string;
   pictureUrl: string;
   createdAt: string;
-  category: number;
-  tags: number[];
+  category: Category;
+  tags: Tag[];
 }

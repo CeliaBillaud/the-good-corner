@@ -74,20 +74,24 @@ app.delete("/ads/:id", async (req, res) => {
 });
 
 app.put("/ads/:id", async (req, res) => {
-  // const ad = await Ad.findOneByOrFail({id : parseInt(req.params.id)});
+  const id = Number.parseInt(req.params.id);
 
-  // ad.title = req.body.title;
-  // ad.description = req.body.description;
-  // ad.author = req.body.author;
-  // ad.price = req.body.price;
-  // ad.createdAt = req.body.date;
-  // ad.image = req.body.image;
-  // ad.category_id = req.body.category_id;
+  const ad = await Ad.findOneBy({ id });
+  if (ad !== null) {
+    ad.title = req.body.title;
+    ad.description = req.body.description;
+    ad.author = req.body.author;
+    ad.price = req.body.price;
+    ad.pictureUrl = req.body.pictureUrl;
+    ad.category = req.body.category;
+    ad.tags = req.body.tags.map((tagId: string) => ({
+      id: Number.parseInt(tagId),
+    }));
 
-  // ad.save();
+    await ad.save();
+  }
 
-  await Ad.update({ id: parseInt(req.params.id) }, req.body);
-  res.send("updated");
+  res.send(ad);
 });
 
 app.get("/ads/categories/:id", async (req, res) => {
