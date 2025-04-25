@@ -1,28 +1,24 @@
 import { useParams, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { AdDetailsProps } from "../types";
+import {
+  useDeleteAdMutation,
+  useGetAdByIdQuery,
+} from "../generated/graphql-types";
 
 const AdDetails = () => {
-  const [ad, setAd] = useState<AdDetailsProps | null>(null);
   const { id } = useParams();
 
-  const fetchData = async () => {
-    try {
-      const result = await axios.get(`http://localhost:3000/ads/${id}`);
-      console.log(result.data[0]);
-      setAd(result.data[0]);
-    } catch (err) {
-      console.log("error", err);
-    }
-  };
+  const { data, loading, error } = useGetAdByIdQuery({
+    variables: { getAdByIdId: Number(id) },
+  });
 
-  useEffect(() => {
-    fetchData();
-  }, [id]);
+  const [deleteAd] = useDeleteAdMutation({
+    variables: {
+      deleteAdId: Number(id),
+    },
+  });
 
-  const formattedDate = ad?.createdAt
-    ? new Date(ad.createdAt).toLocaleString("fr-FR", {
+  const formattedDate = data?.getAdById.createdAt
+    ? new Date(data?.getAdById.createdAt).toLocaleString("fr-FR", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -33,21 +29,27 @@ const AdDetails = () => {
 
   const navigate = useNavigate();
 
+  if (loading) return <p>Wait for it...</p>;
+  if (error) return <p>Woops, on a tout cassé</p>;
+
   return (
     <>
-      {ad && (
+      {data?.getAdById && (
         <>
-          <h2 className="ad-details-title">{ad.title}</h2>
+          <h2 className="ad-details-title">{data?.getAdById.title}</h2>
           <section className="ad-details">
             <div className="ad-details-image-container">
               <img className="ad-details-image" src="/images/table.webp" />
             </div>
             <div className="ad-details-info">
-              <div className="ad-details-price">{ad.price} €</div>
-              <div className="ad-details-description">{ad.description}</div>
+              <div className="ad-details-price">{data?.getAdById.price} €</div>
+              <div className="ad-details-description">
+                {data?.getAdById.description}
+              </div>
               <hr className="separator" />
               <div className="ad-details-owner">
-                Annonce publiée par <b>{ad.author}</b> le {formattedDate}.
+                Annonce publiée par <b>{data?.getAdById.author}</b> le{" "}
+                {formattedDate}.
               </div>
               <a
                 href="mailto:serge@serge.com"
@@ -71,7 +73,7 @@ const AdDetails = () => {
               <button
                 onClick={async () => {
                   try {
-                    await axios.delete(`http://localhost:3000/ads/${ad.id}`);
+                    await deleteAd({ variables: { deleteAdId: Number(id) } });
                     navigate("/");
                   } catch (err) {
                     console.log("error", err);

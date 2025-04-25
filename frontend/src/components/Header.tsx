@@ -1,11 +1,9 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
-import { Category } from "../types";
 import { useNavigate } from "react-router";
+import { useGetAllCategoriesQuery } from "../generated/graphql-types";
 
 const Header = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -23,18 +21,10 @@ const Header = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/categories");
-      setCategories(response.data);
-    } catch (error) {
-      console.error("An error occured while fetching categories :", error);
-    }
-  };
+  const { data, loading, error } = useGetAllCategoriesQuery();
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  if (loading) return <p>Wait for it...</p>;
+  if (error) return <p>Woops, on a tout cassé</p>;
 
   return (
     <header className="header">
@@ -75,7 +65,7 @@ const Header = () => {
         </Link>
       </div>
       <nav className="categories-navigation">
-        {categories.map((category) => (
+        {data?.getAllCategories.map((category) => (
           <Link
             to={`/ads/categories/${category.id}`}
             className="category-navigation-link"
