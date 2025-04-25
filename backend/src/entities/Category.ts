@@ -1,22 +1,28 @@
-import{
-    BaseEntity,
-    Column, Entity,   
-    OneToMany,  
-    PrimaryGeneratedColumn
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 import Ad from "./Ad";
+import { Field, ObjectType } from "type-graphql";
 
 @Entity()
-class Category extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    id: number;
+@ObjectType()
+class Category extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  @Field()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  @Field()
+  name: string;
 
-    @OneToMany(() => Ad, ad => ad.category)
-    ads: Ad[];
+  @OneToMany(() => Ad, (ad) => ad.category)
+  @Field(() => [Ad])
+  ads: Ad[];
 }
 
 export default Category;
