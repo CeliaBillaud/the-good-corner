@@ -87,8 +87,18 @@ export class AdResolver {
 
   @Mutation(() => ID)
   async updateAd(@Arg("id") id: number, @Arg("data") data: AdInput) {
-    //const ad = await Ad.findOneBy({ id });
-    Ad.update({ id }, data);
+    let ad = await Ad.findOneByOrFail({ id });
+    //on écrase l'objet ad avec data de type AdInput
+    ad = Object.assign(ad, data, {
+      tags: data.tags.map((tag) => ({ id: Number(tag) })),
+    });
+    await ad.save();
+    return ad.id;
+  }
+
+  @Mutation(() => ID)
+  async deleteAd(@Arg("id") id: number) {
+    await Ad.delete({ id });
     return id;
   }
 }
