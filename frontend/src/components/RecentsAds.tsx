@@ -1,33 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AdCard from "./AdCard";
-import { AdCardProps } from "../types";
-import axios from "axios";
 import { Link } from "react-router";
+import { useGetAllAdsQuery } from "../generated/graphql-types";
 
 const RecentAds = () => {
   const [total, setTotal] = useState(0);
-  const [ads, setAds] = useState<AdCardProps[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get<AdCardProps[]>(
-          "http://localhost:3000/ads"
-        );
-        setAds(result.data);
-      } catch (err) {
-        console.log("error", err);
-      }
-    };
-    fetchData();
-  }, []);
-
+  const { data, loading, error } = useGetAllAdsQuery();
+  if (loading) return <p>Wait for it...</p>;
+  if (error) return <p>Woops, on a tout cassé</p>;
   return (
     <>
       <h2>Annonces récentes</h2>
       <p>Total: {total}€</p>
       <section className="recent-ads">
-        {ads.map((ad) => (
+        {data?.getAllAds.map((ad) => (
           <Link to={`/ads/${ad.id}`} className="ad-card-container" key={ad.id}>
             <AdCard {...ad} />
             <button

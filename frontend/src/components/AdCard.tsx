@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import { AdCardProps } from "../types";
 
 const AdCard = ({ title, pictureUrl, price }: AdCardProps) => {
